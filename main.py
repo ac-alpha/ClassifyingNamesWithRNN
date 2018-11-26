@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+import unicodedata
 
 '''First step : Loading the dataset'''
 
@@ -18,7 +19,7 @@ for file in onlyFileNames:
 	completeFileName = dataSetPath+file
 	ofile = open(completeFileName,"r")
 	currentFileData = ofile.readlines()
-	currentFileData = [x.strip() for x in currentFileData]
+	currentFileData = [unicodedata.normalize('NFKD', x.strip()).encode('ascii','ignore') for x in currentFileData]
 	ofile.close()
 	langName = file[:-4]
 	dataSetComplete[langName]=currentFileData
