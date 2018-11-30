@@ -4,6 +4,7 @@ import unicodedata
 import string
 import torch
 import torch.nn as nn
+from random import shuffle
 
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
@@ -92,6 +93,35 @@ def categoryFromOutput(output):
     return all_categories[category_i], category_i
 
 print(categoryFromOutput(output))
+
+criterion = nn.NLLLoss()
+
+learning_rate = 0.005
+
+##Converting the dataset dict to an array
+wholeDataSet=[]
+for category in dataSetComplete:
+	for name in dataSetComplete[category]:
+		oneExample = []
+		oneExample.append(name)
+		oneExample.append(category)
+		wholeDataSet.append(oneExample)
+shuffle(wholeDataSet)
+# for i in range(100):
+# 	print(wholeDataSet[i])
+
+total_names = len(wholeDataSet)
+num_training_examples = (total_names*4)/5
+trainDataSet = wholeDataSet[:num_training_examples]
+testDataSet = wholeDataSet[num_training_examples:]
+
+num_epochs=5
+
+# for epoch in range(num_epochs):
+# 	for example in 
+
+
+
 
 
 
