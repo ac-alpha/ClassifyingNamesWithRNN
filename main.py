@@ -5,6 +5,7 @@ import string
 import torch
 import torch.nn as nn
 from random import shuffle
+import time
 
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
@@ -117,8 +118,52 @@ testDataSet = wholeDataSet[num_training_examples:]
 
 num_epochs=5
 
-# for epoch in range(num_epochs):
-# 	for example in 
+def timeSince(since):
+    now = time.time()
+    s = now - since
+    m = math.floor(s / 60)
+    s -= m * 60
+    return '%dm %ds' % (m, s)
+
+start = time.time()
+
+def train(nameTensor, categoryTensor):
+	hidden = rnn.initHidden()
+	rnn.zero_grad()
+
+	for i in range(nameTensor.size()[0]):
+		output, hidden = rnn.forward(nameTensor[i], hidden)
+
+	loss = criterion(output, categoryTensor)
+	loss.backward()
+
+	for p in rnn.parameters():
+		p.data.add_(-learning_rate, p.grad.data)
+
+	return output, loss.item()
+
+allLosses=[]
+
+for epoch in range(num_epochs):
+	currentLoss = 0
+	i=0
+	lossesRecord=[]
+	for example in trainDataSet:
+		categoryTensor = torch.tensor([all_categories.index(example[1])], dtype=torch.long)
+		nameTensor = nameToTensor(example[0])
+		output, loss = train(nameTensor, categoryTensor)
+		currentLoss+=loss
+		i+=1
+		if i%1000==0:
+			print('Epoch : %d Iteration: %d Time: %s CurrentLoss: %.4f TotalLoss: %.4f ' % 
+				(epoch,i,timeSince(start), loss,currentLoss))
+		if i%1000==0:
+			lossesRecord.append(currentLoss/1000)
+			currentLoss=0
+	allLosses.append(lossesRecord)
+
+
+
 
 
 
