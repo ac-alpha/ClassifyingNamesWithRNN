@@ -5,7 +5,7 @@ import string
 import torch
 import torch.nn as nn
 from random import shuffle
-import time
+import time,math
 
 all_letters = string.ascii_letters + " .,;'"
 n_letters = len(all_letters)
@@ -18,8 +18,6 @@ def unicodeToAscii(s):
         if unicodedata.category(c) != 'Mn'
         and c in all_letters
     )
-
-'''First step : Loading the dataset'''
 
 dataSetPath = "data/names/"
 onlyFileNames = []
@@ -112,11 +110,12 @@ shuffle(wholeDataSet)
 # 	print(wholeDataSet[i])
 
 total_names = len(wholeDataSet)
-num_training_examples = (total_names*4)/5
+num_training_examples = int((total_names*4)/5)
+print(num_training_examples)
 trainDataSet = wholeDataSet[:num_training_examples]
 testDataSet = wholeDataSet[num_training_examples:]
 
-num_epochs=5
+num_epochs=30
 
 def timeSince(since):
     now = time.time()
@@ -144,21 +143,23 @@ def train(nameTensor, categoryTensor):
 
 allLosses=[]
 
-for epoch in range(num_epochs):
+for epoch in range(num_epochs+1):
 	currentLoss = 0
 	i=0
 	lossesRecord=[]
+	totalLoss=0
 	for example in trainDataSet:
 		categoryTensor = torch.tensor([all_categories.index(example[1])], dtype=torch.long)
 		nameTensor = nameToTensor(example[0])
 		output, loss = train(nameTensor, categoryTensor)
 		currentLoss+=loss
+		totalLoss+=loss
 		i+=1
-		if i%1000==0:
+		if i%2000==0:
 			print('Epoch : %d Iteration: %d Time: %s CurrentLoss: %.4f TotalLoss: %.4f ' % 
-				(epoch,i,timeSince(start), loss,currentLoss))
-		if i%1000==0:
-			lossesRecord.append(currentLoss/1000)
+				(epoch,i,timeSince(start), loss,totalLoss))
+		if i%2000==0:
+			lossesRecord.append(currentLoss/2000)
 			currentLoss=0
 	allLosses.append(lossesRecord)
 
@@ -171,6 +172,7 @@ def evaluate(nameTensor):
 
     return output
 
+correct=0
 for example in testDataSet:
 	nameTensor = nameToTensor(example[0])
 	category = example[1]
@@ -181,7 +183,7 @@ for example in testDataSet:
 
 total = len(testDataSet)
 accuracy = correct*100.0/total
-print("Accuracy = "+accuracy)
+print("Accuracy = "+str(accuracy))
 
 
 
