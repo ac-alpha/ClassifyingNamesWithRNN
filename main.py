@@ -163,7 +163,25 @@ for epoch in range(num_epochs):
 	allLosses.append(lossesRecord)
 
 
+def evaluate(nameTensor):
+    hidden = rnn.initHidden()
 
+    for i in range(nameTensor.size()[0]):
+        output, hidden = rnn(nameTensor[i], hidden)
+
+    return output
+
+for example in testDataSet:
+	nameTensor = nameToTensor(example[0])
+	category = example[1]
+	output = evaluate(nameTensor)
+	guess, guess_i = categoryFromOutput(output)
+	if guess == category:
+		correct+=1
+
+total = len(testDataSet)
+accuracy = correct*100.0/total
+print("Accuracy = "+accuracy)
 
 
 
