@@ -19,6 +19,10 @@ The model used in training the classifier is taken from [this tutorial](https://
 <p align="center">
 <img src="model.png" /></div>
 
+## Code
+
+The actual code is well documented and explained [here](https://github.com/the-bat-hunter/ClassifyingNamesWithRNN/blob/master/name_classifier.ipynb)
+
 ## Implementation Details
 
 Negative Log Likelihood loss has been used to compute the losses between predictions and actual outputs. 
