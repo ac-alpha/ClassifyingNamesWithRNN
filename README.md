@@ -19,5 +19,5 @@ The model used in training the classifier is taken from [this tutorial](https://
 <p align="center">
 <img src="model.png" /></div>
 
-## Licence
-See licence.md
+## License
+See [LICENSE](https://github.com/the-bat-hunter/ClassifyingNamesWithRNN/blob/readme/LICENSE)
