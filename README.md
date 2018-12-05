@@ -11,5 +11,13 @@ in which the names belonging to that language are present in different lines.
 
 ## Model Used
 
-Each character of the name is input sequentially to the RNN unit along with the previous hidden state. The output of the RNN unit
-is the predicted category along with the new hidden state. Actually a
+Each character of the name is input sequentially to the RNN unit along with the previous hidden state. The output of the RNN 
+unit is the predicted category along with the new hidden state. Actually the main purpose of the hidden state of any RNN unit is to store some information about the sequence before the current character. 
+
+The model used in training the classifier is taken from [this tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html). 
+
+<p align="center">
+<img src="model.png" /></div>
+
+## Licence
+See licence.md
